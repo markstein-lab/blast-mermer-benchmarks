@@ -1,0 +1,32 @@
+diff --git a/src/algo/blast/api/prelim_search_runner.hpp b/src/algo/blast/api/prelim_search_runner.hpp
+index 8208a90..5e85436 100644
+--- a/src/algo/blast/api/prelim_search_runner.hpp
++++ b/src/algo/blast/api/prelim_search_runner.hpp
+@@ -40,6 +40,9 @@
+  * @{
+  */
+ 
++#include <sys/time.h>
++#include <ctime>
++
+ #include <corelib/ncbithr.hpp>                  // for CThread
+ #include <algo/blast/api/setup_factory.hpp>
+ #include "blast_memento_priv.hpp"
+@@ -68,6 +71,8 @@ public:
+         _ASSERT(m_InternalData.m_LookupTable);
+         _ASSERT(m_InternalData.m_HspStream);
+         SBlastProgressReset(m_InternalData.m_ProgressMonitor->Get());
++		struct timeval time1, time2;
++		gettimeofday(&time1, nullptr);
+         Int2 retval = Blast_RunPreliminarySearchWithInterrupt(m_OptsMemento->m_ProgramType,
+                                  m_InternalData.m_Queries,
+                                  m_InternalData.m_QueryInfo,
+@@ -85,6 +90,8 @@ public:
+                                  m_InternalData.m_Diagnostics->GetPointer(),
+                                  m_InternalData.m_FnInterrupt,
+                                  m_InternalData.m_ProgressMonitor->Get());
++		gettimeofday(&time2, nullptr);
++		std::cout << "Time to search was: " << (time2.tv_sec - time1.tv_sec) * 1000 + (time2.tv_usec - time1.tv_usec) / 1000 << std::endl;
+ 
+         return static_cast<int>(retval);
+     }

@@ -154,6 +154,7 @@ fn blast_iter(reads: &[&[u8]]) -> IterResult {
         })
         .collect::<Vec<String>>()
         .join("\n");
+    let word_size = reads[0].len() - 1;
     let start = Instant::now();
     let mut cmd = Command::new("blastn")
         .stderr(Stdio::null())
@@ -170,7 +171,7 @@ fn blast_iter(reads: &[&[u8]]) -> IterResult {
         .arg("-evalue")
         .arg("0.001")
         .arg("-word_size")
-        .arg("9")
+        .arg(word_size.to_string())
         .arg("-dust")
         .arg("no")
         .arg("-strand")
@@ -222,10 +223,8 @@ fn main() -> Result<(), std::io::Error> {
     };
 
     for _ in 0..query_count {
-        let (hits, canonical, reported) = measure_iter(&genome, program, query_length, 1)?;
-        println!("{:?}", hits);
-        println!("{:?}", canonical);
-        println!("{:?}", reported);
+        let (_, canonical, reported) = measure_iter(&genome, program, query_length, 1)?;
+        println!("{},{}", canonical.as_millis(), reported.as_millis());
     }
 
     Ok(())
