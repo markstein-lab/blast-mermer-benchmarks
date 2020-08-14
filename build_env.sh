@@ -29,9 +29,8 @@ compile_mermer() {
 }
 
 fetch_dm6() {
-    wget "ftp://ftp.ensemblgenomes.org/pub/release-47/metazoa/fasta/drosophila_melanogaster/dna/Drosophila_melanogaster.BDGP6.28.dna.toplevel.fa.gz"
-    gunzip "Drosophila_melanogaster.BDGP6.28.dna.toplevel.fa.gz"
-    mv "Drosophila_melanogaster.BDGP6.28.dna.toplevel.fa" "dm6.fa"
+    wget "http://hgdownload.cse.ucsc.edu/goldenPath/dm6/bigZips/dm6.fa.gz"
+    gunzip "dm6.fa.gz"
 }
 
 compile_blastdb() {
